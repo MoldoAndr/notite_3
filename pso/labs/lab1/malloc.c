@@ -32,7 +32,6 @@ void free(void* ptr) {
     if (!real_free) {
         real_free = dlsym(RTLD_NEXT, "free");
         if (!real_free) {
-            // Handle error
             const char *error = dlerror();
             write(STDERR_FILENO, error, strlen(error));
             _exit(EXIT_FAILURE);
