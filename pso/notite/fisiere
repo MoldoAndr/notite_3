@@ -1,0 +1,24 @@
+  -  Central for UNIX philosophy
+
+  -  All SystemCalls for I/O refer to open files using a file descriptor > 0
+      -  file descriptor are used for everything: sockets, files, pipes, FIFOs, etc.
+
+  -  Most programs expect to be able to use 3 STANDARD file descriptors:
+
+    File descriptor     Purpose      POSIX name     stdio stream
+          0         standard input   STDIN_FILENO      stdin
+          1         standard output  STDOUT_FILENO     stdout
+          2         standard error   STDERR_FILENO     stderr
+
+    - fd = open(pathname, flags, mode) - opens the file identified by pathname, 
+          returning a file descriptor used to refer to the open file in subsequent calls
+
+    - numread = read(fd, buffer, count) reads at most COUNT bytes from the open file
+          referred to by fd and stores them in buffer. The read call returns the number
+          of bytes read.
+
+  -  Universality of UNIX I/O model =>
+        -  same 4 system calls - open(), read(), write(), close()
+                used to perform I/O operations on all types of files,
+                including devices such as terminals
+    
