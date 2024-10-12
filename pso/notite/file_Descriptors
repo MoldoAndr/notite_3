@@ -1,0 +1,13 @@
+	file descriptor		-	small integer used as a reference to open a file in a process
+				-	process = currently running instance of a program
+				-	inherited file descriptors: 0,1,2 => input, output, error
+				-	integer is simple to process
+	
+	To represent open files, the system uses 3 data structures
+		-	Table of file descriptors	each process has one
+							are being mapped to entries of the open files Table
+		-	Table of open files		is shared between all processes, 
+							access mode, offset, pointer to the entry in the inode table
+		-	Table of inodes			is shared between all processes, describes the file in detail
+	
+	

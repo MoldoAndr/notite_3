@@ -1,0 +1,34 @@
+3.3
+	Standard C Library
+		-	libc.so.6	-	versiune utilizata
+		-	ldd		-	prints shared object dependencies
+	Standard Header Files in C
+	-	stdio.h 	-	I/O functions			-	scanf, printf, FILE, fopen
+	-	stdlib.h	-	General Utility functions	-	atio, atof, malloc
+	-	math.h		-	Math Functions			-	sin, cos, pow, sqrt
+	-	string.h	-	String Function			-	strcpy,
+	-	ctype.h		-	Character Handling Functions	-	isalpha, islower
+	-	limits.h	-	Basic Size Types		-	CHAR_BIT, CHAR_MAX
+	-	wctype.h	-	Wide Character Data		-	iswalpha
+
+	Computed includes	
+			-	select different header based on input or based on system
+		#if SYSTEM_1
+   			# include "system_1.h"
+		#elif SYSTEM_2
+   			# include "system_2.h"
+		#elif SYSTEM_3
+
+	Opening a File:	open()
+		-	the open() system call either opens/creates and then opens a file
+		-	int open(const char *pathname, int flags, ... /* mode_t mode */);
+			-	pathname	-	path of file
+			-	mode bit-mask argument specifies the permissions
+			-	flags is not mandatory
+			-	modes:	
+					O_RDONLY	Open the file for reading only
+					O_WRONLY	Open the file for writing only
+					O_RDWR		Open the file for both reading and writing
+
+				-	example for creating a file with specific permissions:	
+						int fd = open("filename", O_CREAT | O_WRONLY, 0644);
