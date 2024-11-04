@@ -1,0 +1,270 @@
+Protocolul IP
+
+-   cuvinte de 32 de biti
+-   componente:
+    -   Versiune    -   4 biti
+        -   IPv4/IPv6
+    -   IHL         -   4 biti
+        -   Internet Header Length
+    -   TOS         -   8 biti
+        -   prioritizare de trafic
+    -   Lungimea    -   16 biti
+        -   lungimea pachetului in octeti
+    -   ID          -   16 biti
+        -   identificare pt. fragmentare
+        -   identificarea fragmentelor asociate unui pachet   
+    -   Flags       -   3 biti
+        -   Reserverd, Don't Fragment, More Fragments
+    -   Offset      -   13 biti 
+        -   de ex.  primul fragment: offset 0, dim. de 300
+                    al doilea fragment: offset 300, dim. de 400
+        -   indica pozitia fragmentului in cadrul pachetului
+        -   permite reasamblarea pachetului la destinatie
+    -   TTL         -  8 biti
+        -   Time To Live
+        -   durata de viata a pachetului masurata in numar de hop-uri
+    -   Protocol    -   8 biti
+        -   identifica protocolul superior
+    -   Adresa Sursa-   32 biti
+        -   adresa IP
+        -   unica in Internet
+    -   Adresa Dest.-   32 biti
+        -   unicast/multicast/broadcast
+    -   Optiuni     -   32 biti
+        -   informatii suplimentare
+
+Adrese IPv4
+    
+-   172.16.15.130/24
+    -NP-----HP-MASK-
+
+    NP  - Network Portion
+    HP  - Host Portion
+        -   diferentierea dintre ele se face cu ajutorul MASTII DE SUBRETEA, EX: 255.255.0.0
+
+    Exercitii Masti
+
+    ~   -   Masca /27: 
+            255.255.255.[1110 0000]
+            255.255.255.224
+        
+    ~   -  Masca /18:
+            255.255.[1100 0000].[0000 0000]
+            255.255.192.0
+
+    ~   -   Masca /25:
+            255.255.255.[1000 0000]
+            255.255.255.128
+
+    ~   -   Masca && IPv4 address = Network Portion
+            =>  172.16.15.130 && 255.255.255.0 = 172.16.15.0
+
+    ~       =>  192.168.13.173/27
+            255.255.255.224 && 192.168.13.173 = 192.168.13.160/27 = Network Portion
+            -           173 = 128 + 32 + 8 + 4 + 1 = 1010 1101 && 1110 0000
+
+    ~       =>  10.10.153.120/22
+            Masca: 255.255.253.0
+            => 255.255.125.0 && 10.10.153.120 = 10.10.15.20/22
+
+    ~       =>  192.168.30.78/26
+            Masca: 255.255.255.192
+            => 255.255.255.192 && 192.168.30.78 = 192.168.30.64/26
+            -           [0100 1110] && [1100 0000] = [0100 0000]
+            
+    Adrese Cunoscute
+    ~       ->   192.168.30.64/25
+            -   First Address (Default Gateway)     -   192.168.30.[01|00 0001] - 192.168.30.65     
+                                                -   prima adresa, cea a Default Gateway
+            -   Last Address                        -   192.168.30.[01|11 1110] - 192.168.30.126    
+                                                -   ultima adresa pe care o poate avea un user
+            -   BroadCast Address                   -   192.168.30.[01|11 1111] - 192.168.30.127    
+                                                -   adresa pe care se face BroadCast local
+        
+    ~       ->  255.255.255.255
+                -   broadcast local
+            ->  192.168.30.127
+                -   broadcast targetat
+                
+    ~       ->  10.10.5.143/22
+            ->  Masca: 255.255.[1111 1100].0
+            ->  Prima adresa:   10.10.[0000 01|00].[0000 0001] = 10.10.4.1
+            ->  Ultima adresa:  10.10.[1111 11|11].[1111 1110] = 10.10.7.254
+            ->  Broadcast:      10.10.[1111 11|11].[1111 1111] = 10.10.7.255
+
+Clase de adrese IPv4
+    -       Clasa A     -       0xxx xxxx   -   8  biti de retea
+    -       Clasa B     -       10xx xxxx   -   16 biti de retea
+    -       Clasa C     -       110x xxxx   -   24 biti de retea
+    -       Clasa D     -       1110 xxxx   -   32 biti de retea
+
+~ Subnetizare:
+
+~      =>  10.10.10.0/24
+                -   Masca :             255.255.255.0
+                -   Default Gateway:    10.10.10.1
+
+~                   segmentare:     LanA - 110 adrese IP
+                                        LanB - 38  adrese IP
+                                    -   se aseaza in ordine descrescatoare
+                    -   numarul de adrese IP disponibile : 2^n - 2 = nr de biti din partea de host
+                        n   =   6 = > 2^6 - 2 = 62
+                        n   =   3 = > 2^3 - 2 = 6
+
+~      LanA : 110 <= 2^n -2 => n = 7, pastram 7 biti in partea de host
+            -   cea mai apropiata valoare
+            =>      10.10.10.[0000 0000] => 10.10.10.[0|000 0000]
+                                                    | ---HOST--
+                                                    |=> numarul de biti imprumutati => 2^n = nr de subretele
+            => 10.10.10.0/25 => 255.255.255.128 = Masca de subretea
+            10.10.10.[0|000 0001] = 10.10.10.1/25       - Prima adresa
+            10.10.10.[0|111 1110] = 10.10.10.126        - Ultima adresa
+            10.10.10.[0|111 1111] = 10.10.10.127        - Adresa de broadcast
+
+~     LanB : 17 <= 2^n - 2 => n = 7, pastram 7 biti in partea de host
+            =>      10.10.10.[1000 0000] => 10.10.10.128/25
+            - Prima adresa:     10.10.10.[1|000 0001]   = 10.10.10.129
+            - Ultima adresa:    10.10.10.[1|111 1110]   = 10.10.10.254
+            - Broadcast:        10.10.10.[1|111 1111]   = 10.10.10.255
+
+~ de citit masca variabila de subretea ~
+
+
+~ Subnetizare
+    -   172.16.15.0/24
+    -   Masca de subretea : 255.255.0.0
+        -   LanA: 23 adrese IP
+        -   LanB: 58 adrese IP
+        -   LanC: 33 adrese IP
+    -   ordonare: B, C, A
+    LanB:
+        => 58 <= 2^6 - 2 = 62 => n = 6, pastram 6 biti in partea de host
+            => 172.16.15.[00|00 0000] = > 172.16.15.0/26
+            - Masca :           172.16.15.[1100 0000]  => 172.16.15.192
+            prima adresa:       172.16.15.[00|00 0001] => 172.16.15.1
+            ultima adresa:      172.16.15.[00|11 1110] => 172.16.15.62
+            adresa broadcast:   172.16.15.[00|11 1111] => 172.16.15.63
+    LanC:
+        => 58 <= 2^6 - 2 = 62 => n = 6, pastram 6 biti in partea de host
+            => 172.16.15.[01|00 0000] = > 172.16.15.64/26
+            - Masca :           172.16.15.[1100 0000]  => 172.16.15.64
+            prima adresa:       172.16.15.[01|00 0001] => 172.16.15.65
+            ultima adresa:      172.16.15.[01|11 1110] => 172.16.15.126
+            adresa broadcast:   172.16.15.[01|11 1111] => 172.16.15.127
+    LanA:
+        => 58 <= 2^6 - 2 = 62 => n = 6, pastram 6 biti in partea de host
+            => 172.16.15.[10|00 0000] => 172.16.15.128/26
+            - Masca :           172.16.15.[1100 0000]  => 172.16.15.192
+            prima adresa:       172.16.15.[10|00 0001] => 172.16.15.129
+            ultima adresa:      172.16.15.[10|11 1110] => 172.16.15.190
+            adresa broadcast:   172.16.15.[10|11 1111] => 172.16.15.191
+
+~ Magic number: diferenta intre Lan-urile unei subretele, de exemplu: 2^6
+
+
+Protocol ICMP
+
+    -   util in administrarea unei retele IP 
+    -   constituie un element necesar in implementarile IP, fiind un protocol de control
+
+    Util pentru
+        -   erori aparute pe timpul transmisiei
+        -   disponibilitatea statiilor aflate la distanta
+        -   congestia retelei
+    
+    Tipuri de mesaje ICMP
+        -   Echo request/reply
+                -   testarea conectivitatii unei statii si detectarea problemelor
+        -   timestamp/timestamp reply
+                -   masurarea performantelor unei retele prin calcularea timpului de transmisie
+        -   destination unreachable
+                -   generat de un router atunci cand destinatia face parte din reteaua in care se afla routerul, dar nu este disponibila
+        -   time exceeded
+                -   TTL = 0
+        -   parameter problem
+                -   nu contine valori valide in antet
+        -   source quench
+                -   supraincarcarea cu pachete a unei statii
+        -   redirect
+                -   ruta ineficient de lunga
+
+    Formatul mesajelor ICMP
+        
+        type        code        checksum
+        additional information or 0x0000
+
+        are minim 8 bytes
+
+    ping
+        -   testare conectivitate
+        -   echo request -> echo reply
+    traceroute
+        -   identificarea rutei dintre 2 statii
+        -   genereaza o lista de hopuri
+        -   TTL variabil, incepand cu 1 pana la destinatie crescand
+
+    header IP       :   20 bytes
+    header ICMP     :   8 bytes
+    dim max ICMP    :   1472 bytes
+
+Protocol ARP
+
+    -   transmisia efectiva a datelor se face la nivel 2
+    -   statiile sunt identificate dupa adresa MAC
+    
+    caracteristici ARP (Address Resolution Protocol):
+        -   translatarea adreselor IP in adrese MAC
+        -   tabela ARP
+        -   comunicarea intre 2 statii care se afla in segmente de retea diferite
+
+    caracteristici RARP (Reverse Address Resolution Protocol):
+        -   MAC -> IP
+        -   folosit la bootarea din retea pentru a cere o adresa IP
+        -   necesita existenta unui server RARP
+        -   acelasi format de pachet ca si la ARP doar ca difera codul operatiei
+    
+    -   cererea ARP foloseste pachete de tip broadcast iar raspunsul foloseste pachete de tip unicast
+
+    Gratuitous ARP
+        -   ARP request/reply care in mod normal nu este necesar, in ceea ce priveste specificatiile ARP
+        -   adresa IP sursa si adresa IP destinatie la fel, adica adresa IP  astatiei care initiaza request-ul, iar adresa MAC destinatie este adresa de broadcast
+        foloseste la:
+            -   detectarea confictelor IP
+            -   reimprospatarea tabelelor ARP ale celorlalte statii
+            
+    Cache ARP
+        -   pentru minimizarea numarului de broadcast-uri, se pastreaza un cache ARP
+        -   contine mapari IP-MAC
+        -   intrari statice (care raman) / intrari dinamice (in timp)
+        -   mesaje: ARP Request, ARP reply, RARP request, RARP reply
+        -   cererile au ca adresa destinatie, adresa de broadcast
+    
+    Formatul mesajelor
+        
+        Hardware type                       Protocol   type
+        HW add length Prot add length       Opeartion code
+                        Source hardware address
+                        Source protocol address
+                        Target hardware address
+                        Source protocol address
+
+            Hardware type - specifică tipul rețelei fizice (exemplu: pentru Ethernet este 1)
+            Protocol Type - specifică tipul adreselor de nivel 3 (OSI) folosite în mesaj. 
+                Pentru adresele IPv4 valoarea este 0x0800.
+            Hardware Address Length - specifică lungimea adreselor hardware din acest mesaj. 
+                Pentru Ethernet sau alte rețele care folosesc IEEE 802 valoarea este 6
+            Protocol Address Length - specifică lungimea adreselor de nivel 3 (nivel rețea) din acest mesaj. 
+                Pentru adresele IPv4 valoarea este 4
+            Operation Code - specifică natura mesajului ARP(exemplu: 1-request, 2-reply)              
+            Source Hardware Address - Adresa de nivel 2 (OSI) a dispozitivului care trimite mesajul
+            Source Protocol Address - Adresa IP a dispozitivului care trimite mesajul
+            Target Hardware Address - Adresa de nivel 2 (OSI) a dispozitivului către care este trimis mesajul
+            Target Protocol Address - Adresa IP a dispozitivului către care este trimis mesajul
+
+    Configurarea server DHCP 
+        -   pe router
+                Router(config)# ip dhcp pool POOL_NAME                  -   crearea de pool daca nu exista
+                Router(dhcp-config)# network 192.168.1.0 255.255.255.0  -   setarea adresei retele si a mastii de subretea
+                Router(dhcp-config)# default-router 192.168.1.1         -   alegerea default-gateway-ului
+                Router(dhcp-config)# dns-server 8.8.8.8                 -   alegerea unui server de DNS
+                Router(dhcp-config)# lease 0 12                         -   alegerea timpului de imprumut a unei adrese IP
