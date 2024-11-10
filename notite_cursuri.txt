@@ -1,0 +1,212 @@
+Semnal		-	model matematic al unui proces care contine informatie
+		
+Reprezentarea semnalelor
+		-	o functie de una sau mai multe variabile care descriu un fenomen fizic
+	
+Valoare continua	=	semnal analogic
+Valoare discreta 	=	semnal discret
+
+Senzor			=	dispozitiv electronic care transforma un alt tip de energie in energie electrica
+
+Semnal discret	-	fiecarei valori de timp aleasa ii corespunde o valoare de 
+
+Semnale analogice
+	-	semnale continue ce pot fi reprezentate din punct de vedere matematic ca functii reale continue in timp
+	-	pentru a putea fi procesate semnalele analogice sunt convertite in semnale digitale
+
+Conversia din semnal continuu in semnal digital se face prin 2 operatii de baza:
+		-	discretizarea in timp a semnalului
+		-	discretizarea in amplitudine a semnalului
+
+Discretizarea in timp a semnalului
+	-	poarta denumirea de esantionare
+
+Discretizarea in amplitudine a semnalului
+	-	poarta denumirea de cuantizare si este realizata cu un circuit de tip convertor analog-digital(CAD)
+
+Esantionare
+	-	discretizare in timp a unui semnal continuu
+	-	un esantion = valoarea semnalului la un moment dat, bine precizat
+	-	rezultatul esantionarii se numeste un sir de esantioane
+	Frecventa de esantionare
+		-	frecventa cu care sunt prelevate esantionanele in timp a semnalului
+		-	conform teoriei esantionarii, criteriul Nyquist trebuie precizat
+		-	criteriul Nyquist: Fs >= 2*Fm
+			-	frecventa de esantionare trebuie sa fie de cel putin 
+				2 ori mai mare decat frecventa semnalului
+		-	conditie suplimentara: spectrul semnalului trebuie sa fie marginit
+	-	pentru a genera un semnal stiind functia de esantionare, se va genera in prealabil un vector de timp
+		care reprezinta practic momentele de timp la care se va realiza esantionarea
+
+Cuantizare
+	-	discretizarea in amplitudine a valorilor esantioanelor
+	-	aproximarea in trepte a unui semnal x
+	-	x =(aprox) qi
+	-	aproximarea valorii la momentul de timp i cu alte cuvinte
+	-	dupa cuantizare, semnalul nu mai poate fi refacut
+	-	zgomotul de cuantizare: diferenta dintre semnalul real si cel cuantizat
+	-	raportul semnal-zgomot
+	-		SNR = 20*lg((Vefsemnal)/(Vefzgomot))
+
+Schimbarea ratei de esantionare
+	Importanta frecventei de esantionare a semnalelor
+		-	replicile sprectrale nu vor fi suprapuse
+		-	trebuie aleasa o frecventa de esantionare care sa surprinda toate valorile
+			semnalului pe anumite cuante de frecventa, dar si sa nu fie prea mare
+			pentru a evita un overhead prea mare
+	Cresterea ratei de esantionare
+		-	cresterea ratei de esantionare se mai numeste si interpolare si presupune
+			introducerea unor valori suplimentare intre cele deja existente
+			pentru o precizie sporita
+	Scaderea ratei de esantionare
+		-	mai este numita si decimare
+		-	poate fi folosita, maxim pana la ajungerea marjei de Fe/2
+		-	facuta pentru a elimina overhead-ul inutil si a creste viteza totala a sistemului
+	Schimbarea ratei de esantionare cu un numar rational
+		-	interpolarea si decimarea sunt folosite pentru schimbarea ratei de esantionare cu un factor intreg
+		-	pentru interpolarea cu un numar rational, se gaseste cel mai mic multiplu comun intre valoarea
+			curenta si valoarea dorita si apoi se schimba frecventa cu acea valoare, revenindu-se mai apoi la
+			valoarea necesara din modificarea graficului
+
+Analiza spectrala a semnalelor
+	-	pentru analiza spectrala a semnalelor in practica se foloseste transformata Z
+	
+	Analiza spectrala a semnalelor folosind transformata Z presupune crearea unui spectru echivalent semnalului
+		care sa denote un anumit comportament al semnalului, acesta fiind prezentat ca valori in interiorul 
+		cercului unitate
+	astfel:
+		-	un semnal atenuat: 	va presupune valori discontinue in interiorul cercului unitate
+		-	un semnal constant: 	va presupune valori continue si simetrice fata de un numar calculat de axe
+		-	un semnal amplificat:	va presupune valori continue ce creeaza o dreapta ce trece prin originea
+							cercului unitate, de asemenea simetric fata de centrul cercului
+							intr-un numar calculabil de puncte
+	Elemente ce reies din analiza spectrala a semnalelor folosind una dintre transformatele Z/LaPlace/Fourier
+		-	Magnitudinea spectrala
+			-	amplitudinea sau intensitatea fiecarei componente de frecventa din semnal
+			-	este intotdeauna pozitiva sau 0
+			-	ofera informatii despre puterea fiecarei frecvente din semnal
+		-	Faza spectrala
+			-	defazajul/deplasarea in timp a fiecarei componente de frecventa
+			-	se calculeaza ca arctangenta dintre puterea imaginara si reala
+			-	se masoara in radiani sau in grade
+
+Transformari elementare ale semnalelor
+	
+	Reflexia
+	Deplasarea 
+	Dilatarea
+	Compresia
+	Asocierea unui semnal periodic
+	Intarzierea
+	Avansul
+
+Proprietati elementare ale semnalelor
+	Paritate
+	Imparitate
+	Periodicitate
+
+~~~Semnalele analogice Ft(x), semnalele discrete Fn(x)~~~
+	
+Energia unui semnal 	-	se masoara pentru semnale cu suport finit
+			-	pentru cel cu suport infinit este infinita
+
+Puterea unui semnal	-	pentru cel cu suport finit este 0
+			-	pentru cel cu suport infinit este diferita de 0 si diferita de infinit
+
+Semnal treapta unitate
+	-	0, t<, 1, t>
+
+Semnal impuls
+	-	derivata semnalului treapta unitate
+	-	are rolul unei functii selector
+	-	nu este o functie, modeleaza un semnal foarte mare in origine, foarte mic cu cat se departeaza de origine 
+		si care aer integrala egala cu 1.
+
+Semnal impuls
+	-	echivalent cu functia identitate, modificata cu indici specifici
+
+Semnal sinus
+	-	periodic si impar
+
+Semnal cosinus
+	-	periodic si impar
+
+
+Sisteme liniare si invariante
+
+	Sistem	=	Orice prelucreaza un semnal
+	
+	Proprietatile sistemelor
+		-	Liniaritate
+		-	Invarianta
+		-	Cauzalitate
+		-	Stabilitate
+		-	Memorie
+		-	Inversabilitate
+
+	1.	Memoria
+		-	nu este capabil sa retina intrari din trecut
+		-	rezultatul unei intrari este acelasi indiferent de timp
+
+	2.	Inversabilitate
+		-	permite reconstructia exacta a semnalului de intrare din semnalul de iesire
+		-	fiecare sistem inversail are o inversa unica
+	
+	3.	Stabilitate
+		-	pentru o intrare limitata, iesirea ramane de asemenea limitata
+		-	un sistem instabil poate crea o iesire infinita sau out of bounds
+	
+	4.	Liniaritate
+		-	suma intrarii semnalelor este suma fiecarei intrari in parte
+		-	suma iesirilor sistemului, este suma tuturor iesirilor in parte
+		-	un sistem liniar poate fi de asemenea descompus in semnale mai simple
+		-	cu alte cuvinte, o caracteristica a semnalului este o functie liniara(de gradul 1)
+		
+	5.	Invarianta
+		-	aceeasi intrare la momente de timp diferite trebuie sa dea acelasi rezultat pentru ca sistemul sa fie invariant
+		-	daca deplasam ssemnalul in timp, outputul va fi acelasi
+	
+	6.	Cauzalitate
+		-	un sistem cauzal depinde doar de intrarile din trecut sau din prezent
+		-	un sistem care depinde si de intrarile din trecut nu este un sistem cauzal
+
+SALI	-	Sistem Analogic Liniar si Invariant in timp
+SNLI	-	Sistem Numeric Liniar si Invariant
+LTI	-	Linear Time Invariant
+LSI	-	Linear Shift invariant
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
