@@ -1,0 +1,160 @@
+Semnale
+	-	tipuri : sincrone si asincrone | real-time si no real time
+	-	metoda brutala de IPC
+	-	folosita pentru error handling
+
+Semnale sincrone
+	-	generate de sine insusi
+	-	poate fi prezis pentru viitor in functie de codul pus la dispozitie
+
+Semnale asincrone
+	-	trimise de alte procese sau de catre kernel
+	-	nu poate fi prezis pentru viitor in functie de codul pus la dispozitie
+
+Doua semnale apropiate in timp pot fi confundate
+Pentru SIGKILL si SIGSTOP nu se poate modifica handle-ul, nu se pot ignora, nu se pot bloca
+
+--------------------------------Signal Handling--------------------------------------------
+
+	int signal(int SIG, void* handler);
+       		-	more trivial
+		-	less control
+
+	int sigaction(int signum, const struct sigaction *act,
+                     struct sigaction *oldact);
+		-	more complex
+		-	more control
+		-	Example Usage:
+
+			void signal_handler(int signum, siginfo_t *info, void *context) {
+			    printf("Received signal: %d\n", signum);
+			}
+
+			int main() {
+    			struct sigaction sa;
+    
+    			// Initialize sigaction struct
+    			sa.sa_sigaction = signal_handler;    // Set handler function
+    			sa.sa_flags = SA_SIGINFO;           // Enable detailed signal info
+    			sigemptyset(&sa.sa_mask);           // Clear signal mask
+    
+    			// Register handler for SIGTERM
+    			if (sigaction(SIGTERM, &sa, NULL) == -1) {
+        		perror("Sigaction failed");
+        		return 1;
+    			}
+   
+--------------------------------Signal Description---------------------------------------
+
+	char* strsignal(int SIG);
+		-	mesajul aferent semnalului
+
+	char* psignal(int SIG, const char* message);
+		-	mesajul aferent semnalului si un string auxiliar
+
+	char* sigabbrev_np(int SIG);
+		-	abrevierea semnalului
+
+--------------------------------Signal Mask----------------------------------------------
+	
+	-	prezente pentru blocarea/deblocarea unui semnal la nivel de kernel
+	-	tipul de date aferent unei masti de semanle:
+			sigset_t;
+				-	necesita initializare cu sigemptyset/sigfillset
+	-	functi aferente:
+			sigemptyset(sigset_t* set);		-	initializare cu 0
+			sigfillset(sigset_t* set);		-	initializare cu 1
+			sigaddset(sigset_t* set, int sig);	-	adaugare un semnal in masca
+			sigdelset(sigset_t* set, int sig);	-	stergere un semnal din masca
+			
+			sigprocmask(int how, const sigset_t* set, sigset_t* oldset);
+				-	pune in aplicare modificarile de masca
+					-	how : 	SIG_BLOCK:	blocheaza semnalele adaugate in masca
+							SIG_UNBLOCK:	deblocheaza semnalele adaugate in masca
+							SIG_SETMASK:	seteaza masca cu cea noua, echivalent cu SIG_BLOCK
+
+--------------------------------Signal Transmitting-------------------------------------
+
+	-	transmiterea de semnale intre procese se poate face cu functiile kill() si sigqueue()
+	
+	-	int kill(pid_t pid, int sig);
+		-	trimite semnalul sig procesului cu PID-ul pid
+		-	nu garanteaza trimiterea semnalului
+		-	semnalul este salvat pe stiva normala, stiva predispusa la buffer overflow
+	-	int sigqueue(pid_t pid, int signo, const union sigval value);
+		-	trimite semnalul signo alaturi de informatii auxiliare stocate in value procesului cu PID-ul pid
+		-	garanteaza trimiterea semnalului, este salvat intr-o stiva separata de semnale
+		-	Exemplu:
+			#include<signal.h>
+			#include<stdio.h>
+			#include<stdlib.h>
+			#include<unistd.h>
+			#include<fcntl.h>
+			
+			int main()
+			{	
+				sigval value;
+				value.sival_int = 400;
+				sigqueue(12345,SIGINT,value);
+				return 0;
+			}
+
+--------------------------------Signal Waiting------------------------------------------
+
+	-	cea mai buna solutie pentru asteptarea unui semnal este folosirea functiei
+			
+			int sigsuspend(const sigset_t *set);
+				-	asteapta ca semnalul setat din masca sa fie primit
+				-	crearea mastii:
+						sigset_t set;
+						sigefillset(&set);
+						sigdelset(&set, SIGINT);
+						sigsuspend(&set);
+					-	in acest exemplu, se blocheaza toate mesajele cu exceptia celui se SIGINT
+						care este si asteptat
+
+--------------------------------Timers in Linux----------------------------------------
+
+	-	legat de obicei de folosirea semnalelor
+	-	crearea unui timer:
+			int timer_create(clockid_t clockid, struct sigevent* env, timer_t timerid);
+			-	crearea de timer cu timerid, relativ la clockid cu eventul ev
+	-	armarea unui timer:
+			int timer_settime(timer_t timerid, int flags, 
+                          const struct itimerspec *new_value,
+                          struct itimerspec * old_value); 
+			-	man timer_settime
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
