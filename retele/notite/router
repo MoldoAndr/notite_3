@@ -1,0 +1,54 @@
+The key components typically found in a network router are:
+
+    Switching Fabric
+      Responsible for forwarding packets between the different network interfaces
+    
+    Routing Engine
+      Handles the routing protocols and maintains the routing table
+      Makes decisions about the best path to forward packets
+    
+    Network Interfaces
+      Physical ports (e.g., Ethernet, fiber) for connecting to different network segments
+      Often includes at least two interfaces (internal and external)
+    
+    Network Address Translation (NAT)
+      Translates between internal private IP addresses and external public IP addresses
+    
+    Dynamic Host Configuration Protocol (DHCP) Server
+      Assigns IP addresses and other network configuration parameters to devices
+    
+    Content Addressable Memory (CAM) Table
+      Stores the mapping between MAC addresses and switch port locations
+    
+    Address Resolution Protocol (ARP) Cache
+      Stores the mapping between IP addresses and MAC addresses
+    
+    Firewall
+      Provides network security by filtering and controlling traffic flow
+    
+    Virtual Private Network (VPN) Server
+      Enables secure remote connectivity to the network
+    
+    Quality of Service (QoS)
+      Prioritizes and manages network traffic to ensure quality of service
+    
+    Wireless Access Point
+      Provides wireless connectivity for devices
+    
+    DNS Caching
+      Improves response times for DNS queries
+    
+    Load Balancing
+      Distributes network traffic across multiple connections or servers
+    
+    Virtual LAN (VLAN) Support
+      Allows logical segmentation of the network
+    
+    Port Forwarding
+      Enables external access to specific services or devices on the internal network
+    
+    Remote Management
+      Provides web-based or protocol-based administration and monitoring
+    
+    Logging and Monitoring
+      Records network events and provides visibility into network activity
