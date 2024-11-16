@@ -22,12 +22,14 @@ Discretizarea in timp a semnalului
 	-	poarta denumirea de esantionare
 
 Discretizarea in amplitudine a semnalului
-	-	poarta denumirea de cuantizare si este realizata cu un circuit de tip convertor analog-digital(CAD)
+	-	poarta denumirea de cuantizare 
+	-	este realizata cu un circuit de tip convertor analog-digital(CAD)
 
 Esantionare
 	-	discretizare in timp a unui semnal continuu
 	-	un esantion = valoarea semnalului la un moment dat, bine precizat
 	-	rezultatul esantionarii se numeste un sir de esantioane
+	
 	Frecventa de esantionare
 		-	frecventa cu care sunt prelevate esantionanele in timp a semnalului
 		-	conform teoriei esantionarii, criteriul Nyquist trebuie precizat
@@ -49,6 +51,7 @@ Cuantizare
 	-		SNR = 20*lg((Vefsemnal)/(Vefzgomot))
 
 Schimbarea ratei de esantionare
+	
 	Importanta frecventei de esantionare a semnalelor
 		-	replicile sprectrale nu vor fi suprapuse
 		-	trebuie aleasa o frecventa de esantionare care sa surprinda toate valorile
@@ -173,40 +176,131 @@ Sisteme liniare si invariante
 SALI	-	Sistem Analogic Liniar si Invariant in timp
 SNLI	-	Sistem Numeric Liniar si Invariant
 LTI	-	Linear Time Invariant
-LSI	-	Linear Shift invariant
+LSI	-	Linear Shift Invariant
+
+Linear Time Invariant (LTI)
+	Used for continuous-time signals and systems
+	Time-shift property: if input x(t) produces output y(t), then input x(t-t₀) produces output y(t-t₀)
+	The term "time" explicitly indicates we're dealing with time-domain signals
 
 
+Linear Shift Invariant (LSI)
+	Used for discrete-space signals, like images or discrete sequences
+	Shift property: if input x[n] produces output y[n], then input x[n-n₀] produces output y[n-n₀]
+	More general term that can apply to any domain where shifting occurs (not just time)
+
+Both systems share these properties:
+
+Linearity: satisfy superposition principle (scaling and addition)
+Invariance: shifting/delaying the input results in an equally shifted/delayed output
+Can be characterized by their impulse response
+Convolution holds true for both
+
+The term LSI is often preferred when dealing with:
+	Digital signal processing
+	Image processing (where shifts occur in space rather than time)
+	Discrete sequences where the independent variable isn't necessarily time
+
+metode de descompunere pentru sisteme LSI și LTI:
+
+Descompunerea sistemelor LTI (Linear Time Invariant):
+
+		a) Descompunerea în Serie Fourier:
+			Folosită pentru semnale periodice continue
+			Descompune semnalul în suma de sinusoide (sinus și cosinus)
+			Formula: x(t) = a₀/2 + Σ(aₙcos(nωt) + bₙsin(nωt))
+
+		b) Transformata Fourier:
+			Pentru semnale aperiodice continue
+			Convertește semnalul din domeniul timp în domeniul frecvență
+			Formula: X(ω) = ∫x(t)e^(-jωt)dt
+
+		c) Transformata Laplace:
+			Generalizează transformata Fourier
+			Utilă pentru analiza stabilității și răspunsului sistemului
+			Formula: X(s) = ∫x(t)e^(-st)dt
 
 
+Descompunerea sistemelor LSI (Linear Shift Invariant):
 
+		a) Transformata Fourier Discretă (DFT):
+			Pentru secvențe discrete finite
+			Descompune în componente frecvențiale discrete
+			Formula: X[k] = Σx[n]e^(-j2πkn/N)
 
+		b) Transformata Z:
+			Echivalentul discret al transformatei Laplace
+			Utilă pentru analiza sistemelor discrete
+			Formula: X(z) = Σx[n]z^(-n)
 
+		c) Descompunerea în Valori Singulare (SVD):
+			Foarte utilă în procesarea imaginilor
+			Descompune matricea în produsul U∑V^T
+			Ajută la compresia și filtrarea datelor
 
+Functia de transfer 
+	-	raportul dintre transformata Z a iesirilor si transformata Z a intrarilor 
 
+Relatia intrare-iesire
+	-	functie recursiva care imi defineste semnalul la momentul de esantionare n,
+		in functie de semnale la momente de esantionare mai mici sau egale cu momentul
+		de esantionare respectiv
 
+Functia pondere a unui sistem
+	-	modul in care un sistem reactioneaza la un impuls unitar
+	-	poate fi calculata inlocuind y[n] cu h[n], si incepem cu n = 0 
+	-	astfel, x[0] = 1, apoi putem calcula celelalte valori absolut recursiv
+	-	pentru a afla formula generala, trebuie calculata transformata Z inversa
 
+Un sistem este cu memorie daca depinde de valorile trecute ale aceluiasi sistem.
 
+Un sistem este invariant in timp daca acesta nu depinde la momentul de timp la care este relativ intreg sistemul.
 
+Fitru numeric cu medie glisanta
+	-	filtru de tip FIR = Finite Impulse Response
+	-	calculeaza media unui numar fix de esantioane consecutive
+	-	efect de netezire	-	reduce zgomotul aleator
+					-	atenueaza variatiile rapide ale semnalului
+	-	intarziere
 
+Convolutie
+	-	operatie matematica care combina doua semnale pentru a obtine un al treilea semnal
+	-	folosit, in principal pentru a analiza modul in care un semnal de intrare este 
+	-	y[n] = SUM(x[k]h[n-k])
+		-	h[n] 	-	raspunsul inpulsional/functie pondere
+		-	y[n] 	-	semnal de iesire
+		-	x[n] 	-	semnal de intrare
+	-	aplicatii:
+		-	filtrarea semnalelor
+		-	analiza raspunsului sistemului la diverse intrari
+		-	realizarea operatiunii de netezire sau estompare a zgomotului
+	-	in principiu, INMULTIRE POLINOMIALA
 
+Deconvolutie
+	-	operatia inversa a convolutiei
+	-	in principiu, INPARTIRE POLINOMIALA
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Corelatia
+	-	masoara similaritatea dintre 2 semnale
+	-	indica in ce masura unul dintre semnale este o versiune deplasata in timp a celuilalt
+	-	de 2 tipuri: 
+		-	autocorelatie
+			-	masoara similaritatea unui semnal cu el insusi, deplasat in timp
+			-	r = SUM(x[n] * x[n+q])
+			-	utilizari
+				-	identificarea periodicitatii	
+		-	corelatie incrucisata
+			-	similaritatea dintre 2 semnale diferite, in functie de un decalaj in timp
+			-	r = SUM(x[n] * y[n+q])
+			-	utilizari
+				-	determinarea sincronizarii sau decalajul temporal dintre 2 semnale
+				-	detectarea modelelor similare in 2 serii de timp
+		
+Semnalul sinus cardinal (sinc)
+	-	roluri:
+		-	reconstructie semnale:	teorema esantionarii
+				x(t) = SUM(x[n] * sinc(t-nT))
+		-	raspunsul impulsului pentru un filtru ideal
+				h(t) = 2f*sinc(2f,t)
+	-	folosit pentru reconstructie semnale datorita valorii considerabil crescute in 0
+		putand fi folosita ca functie de auto/corelatie
