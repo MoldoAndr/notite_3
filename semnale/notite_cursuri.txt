@@ -169,7 +169,7 @@ Sisteme liniare si invariante
 	
 	6.	Cauzalitate
 		-	un sistem cauzal depinde doar de intrarile din trecut sau din prezent
-		-	un sistem care depinde si de intrarile din trecut nu este un sistem cauzal
+		-	un sistem care depinde si de intrarile din viitor nu este un sistem cauzal
 
 SALI	-	Sistem Analogic Liniar si Invariant in timp
 SNLI	-	Sistem Numeric Liniar si Invariant
