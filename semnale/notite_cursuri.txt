@@ -116,8 +116,6 @@ Energia unui semnal 	-	se masoara pentru semnale cu suport finit
 Puterea unui semnal	-	pentru cel cu suport finit este 0
 			-	pentru cel cu suport infinit este diferita de 0 si diferita de infinit
 
-Semnal treapta unitate
-	-	0, t<, 1, t>
 
 Semnal impuls
 	-	derivata semnalului treapta unitate
@@ -132,7 +130,7 @@ Semnal sinus
 	-	periodic si impar
 
 Semnal cosinus
-	-	periodic si impar
+	-	periodic si par
 
 
 Sisteme liniare si invariante
