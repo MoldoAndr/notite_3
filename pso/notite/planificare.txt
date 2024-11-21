@@ -1,0 +1,201 @@
+Comportamentul proceselor
+
+        Executie
+            succesiune de operatii care se executa pe proceselor
+            separate de perioade de asteptare
+        
+        In functie de ponderea starilor, un proces poate functie
+            CPU-Intensive   -   CPU bursts domina Executie
+            I/O-Intensive   -   I/O domina executia
+
+        Schimbarea de context (context-switch)
+        
+        READY → RUNNING
+            Motiv: Scheduler-ul (planificatorul) selectează un proces din coada de așteptare pentru a fi executat.
+            Cauză: Scheduler dispatch.
+
+        NEW → READY
+            Motiv: Procesul a fost creat și este gata pentru execuție, dar așteaptă să fie planificat.
+            Cauză: Procesul este admis de sistem (admitted).
+        
+        RUNNING → READY
+            Motiv: Procesul este întrerupt și plasat în coada de procese gata pentru execuție.
+            Cauză: O întrerupere (interrupt), de exemplu o preemțiune din cauza priorității mai mari a altui proces.
+        
+        RUNNING → WAITING
+            Motiv: Procesul așteaptă un eveniment extern, cum ar fi intrarea/ieșirea (I/O) sau un semnal specific.
+            Cauză: Inițiază o operație de I/O sau așteaptă un eveniment (I/O or event wait).
+        
+        WAITING → READY
+            Motiv: Evenimentul așteptat s-a finalizat (de exemplu, o operație de I/O s-a încheiat). 
+            Procesul este acum gata să fie planificat pentru execuție.
+            Cauză: Completarea unei operații de I/O sau a unui eveniment (I/O or event completion).
+        
+        RUNNING → TERMINATED
+            Motiv: Procesul își încheie execuția fie în mod normal, fie din cauza unei erori.
+            Cauză: Procesul execută un apel de sistem exit sau întâmpină o eroare iremediabilă.
+
+    Planificarea executiei
+
+        inlocuirea unui proces cu un alt proces
+            vechiul context este inlocuit de cel nou
+        eficienta
+            un proces blocat nu tine procesorul ocupat
+        echitate
+            un proces este intrerupt pentru a da voie altuia
+        se apeleaza planificatorul
+            alegerea unui proces
+            inlocuirea procesului curent
+        intervine si dispatcher-ul
+            incarcarea unui nou proces
+            schimbarea de context 
+            comutarea in user-mode
+            jump - new program counter
+    
+    Apelarea planificatorului
+
+        1.  cand procesul din RUNNING moare
+        2.  cand procesul din starea RUNNING se blocheaza
+                operatie blocanta (apel de sistem)
+        3.  cand procesul din RUNNING cedeaza slotul de timp - yield()
+        4.  cand procesului din RUNNING ii expira cuanta de timp
+        5.  cand apare un proces READY prioritar
+
+    Cooperativ si preemptiv
+
+        Planificare cooperativa
+            yielding (cedare)
+            da acces voluntar procesorului
+            interactivitate scazuta
+            implementare simpla
+
+        Planificare preemptiva
+            procesul este preemptat
+            de obicei, expira cuanta
+                intrerupere de ceas
+            interactivitate sporita
+            necesita sincronizare
+
+    Timpi de Planificare
+
+        Procent de utilizare CPU - variaza in teorie 0-100%
+            variaza in practica 40-90%
+        
+        Throughput  -   numarul de procese terminate
+                    in unitatea de timp
+        
+        Timp de asteptare   -   timp asteptat in coada READY
+        
+        Turnaround time     -   timp de rulare; calculat de la intrarea
+            in sistem pana la iesirea din sistem
+        
+        Turnaround time = Timp de asteptare + Timp de rulare
+        
+        Response Time   -   timp masurat de la introducerea in sistem
+            pana la prima instructiune executata
+        
+        Obiective   -   maximizarea ratei de utilizare CPU, maximizare throughput
+                    -   minimizare timpi de asteptare, turnaround, de raspuns
+        
+        Dorim timpi cat mai mici
+                    -   timp de asteptare mic:  sistem interactivit
+                    -   turnaround time mic:    sistem productiv
+
+    Criterii de Planificare
+
+        Gradul de ocupare a procesorului    -   cat mai mare
+        
+        Productivitate (throughput) -   numar de procese incheiate cat mai mare
+
+        Fairness    -   toate procesele sa aiba acces la procesor / resurse
+
+        (Mean) TurnAround time
+            -   timp de rulare in medie cat mai mic
+
+        Timp (mediu) de raspuns
+            -   intervalul de la intrarea in sistem pana la rulare prima oara cat mai mic
+
+        Timp (mediu) de asteptare
+            -   cat mai mic
+         
+    Timp de planificare (particularitati)
+
+        Planificare sistemelor Batch - background processing
+            accentul pe Productivitate
+        
+        Planificarea sistemelor interactive
+            accentul pe interactivite/Fairness
+
+        Planificarea proceselor real-time
+            indeplinirea sarcinilor (garantarea executiei) in timp util
+        
+        Notatii
+
+            WT - Waiting Time
+            MWT - Mean Waiting Time
+            TT - Turnaround Time
+            MTT - Mean Turnaround Time
+            J - Job (batch processing)
+            P - process (interactive processing)
+
+    Planificarea in sisteme batch
+
+        First Come First Served (FCFS)
+            planificarea in ordinea intrarii in sistem
+            un proces cere procesorul este trecut intr-o coada de asteptare
+            procesele care se blocheaza sunt trecute la sfarsitul cozii
+            non-preemptiv
+            avantaje
+                usor de inteles si implementat
+            dezavantaje
+                procesele CPU Bound incetinesc procesele I/O Bound (convoying)
+                timp mediu de asteptare/rurnaround time destul de mare
+        
+        Shortest Job First (SJF)
+            se planifica jobul cel mai scurt
+                trebuie cunoscuta durata de executie dinainte
+        
+        Shortest Remaining Time First (SRFT)
+            varianta preemptiva a algoritmului SJF
+            e nevoie, din nou de o estimare cu privire la timpul de executie al jobului
+            overhead mare
+        
+    Planificare in sisteme interactive
+
+        Sisteme interactive
+            este importanta interactiunea cu utilizatorul
+        
+        Round Robin (time sharing)
+            FCFS preemptiv
+            cunanta de timp de rulare a programului
+            la expirarea cuantei de timp procesul este preemptat
+            cuanta de timp mare
+                    ===>    productivitate ridicata
+                    ===>    interactivitate redusa
+            cuanta de timp mica
+                    ===>    productivitate redusa => timp consumat in schimbari de context
+                    ===>    interactivitate sporita
+            procese considerate egale
+            planificarea cu prioritati aduce urmatoarele modificari
+                unele procese sunt mai egale decat celelalte
+                utilizatori importanti/mai putin importanti
+                procese importante/mai putin importante
+            prioritati dinamice si statice
+
+        Shortest Process Next
+            adaptare Shortest Job First pentru sisteme interactive
+            se ia in considerare faptul ca nu poate fi anticipat timpul de executie
+            tehnica de estimare de tip "aging"
+        
+    Planificare pentru sisteme real-time
+
+        criterii importante
+            indeplinirea operatiilor in timp limitat
+            predictabilitatea
+        Hard real-time
+            rezervarea resurselor
+            nu se foloseste swapping sau memorie virtuala
+        Soft real-time
+            procesele critice au prioritate maxima
+            pot cauza intarzieri mari celorlalte procese
+
