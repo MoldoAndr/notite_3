@@ -177,5 +177,3 @@ Switch(config-if)# switchport mode trunk
 Switch(config-if)# switchport trunk allowed vlan 10,20,30
 Switch(config-if)# exit
 ```
-
-**Note:** Always refer to specific Cisco documentation and your network design requirements when implementing these configurations.
