@@ -71,7 +71,8 @@ Router(dhcp-config)# network <network-ID> <subnet-mask>
 Router(dhcp-config)# default-router <gateway-IP>
 Router(dhcp-config)# dns-server <DNS-IP>
 Router(dhcp-config)# exit
-Router(config)# ip dhcp excluded-address <start-IP> <end-IP>   # Optional
+Router(config)# ip dhcp excluded-address <start-IP> <end-IP>
+Router(config-if)# ip helper-address <DHCP-SERVER-IP>  # Helper Address
 ```
 
 ### Example Configuration
@@ -176,4 +177,28 @@ Switch(config)# interface fastethernet0/1
 Switch(config-if)# switchport mode trunk
 Switch(config-if)# switchport trunk allowed vlan 10,20,30
 Switch(config-if)# exit
+```
+
+### Dynamic NAT
+```
+Router> enable
+Router# configure terminal
+Router(config)# ip nat pool <pool-name> <start-ip> <end-ip> netmask <subnet-mask>
+Router(config)# access-list <list-number> permit <source-network> <wildcard-mask>
+Router(config)# ip nat inside source list <list-number> pool <pool-name>
+Router(config)# interface <inside-interface>
+Router(config-if)# ip nat inside
+Router(config)# interface <outside-interface>
+Router(config-if)# ip nat outside
+```
+
+### Example Dynamic NAT Configuration
+```
+Router(config)# ip nat pool NAT-POOL 203.0.113.1 203.0.113.10 netmask 255.255.255.0
+Router(config)# access-list 1 permit 192.168.1.0 0.0.0.255
+Router(config)# ip nat inside source list 1 pool NAT-POOL
+Router(config)# interface gigabitethernet0/0
+Router(config-if)# ip nat inside
+Router(config)# interface gigabitethernet0/1
+Router(config-if)# ip nat outside
 ```
